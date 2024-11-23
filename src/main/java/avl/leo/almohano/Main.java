@@ -1,8 +1,6 @@
 package avl.leo.almohano;
 
-import avl.leo.almohano.generators.FreeBikeStatusGenerator;
-import avl.leo.almohano.generators.GBFSGenerator;
-import avl.leo.almohano.generators.StationInformationGenerator;
+import avl.leo.almohano.generators.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +18,7 @@ public class Main {
             String agency = scanner.nextLine().toUpperCase();
 
             // Ask for Location Name
-            System.out.print("Enter the agency name (examples: Madrid, Valencia, Bilbao, New York): ");
+            System.out.print("Enter the city name (examples: Madrid, Valencia, Bilbao, New York): ");
             String locationName = scanner.nextLine().toLowerCase();
 
             // Ask for locationName bound coordinates
@@ -44,6 +42,7 @@ public class Main {
     }
 
     private static void generateData(String agency, String location) {
+        //String outputPath = "/Users/leo_almohano/UNI/TFG/datos/TESTING/GBFS/" + agency + "/" + location + "_gbfs/";
         String outputPath = "/Users/leo_almohano/UNI/TFG/datos/GBFS/" + agency + "/" + location + "_gbfs/";
         String outputFilesPath = outputPath + "en/";
 
@@ -51,26 +50,13 @@ public class Main {
 
         int type = random.nextInt(3) + 1;
 
-        List<String> filenames = new ArrayList<>();
+        List<String> filenames = new ArrayList<>(FreeBikeStatusGenerator.generateFreeBikeStatus(agencyName, outputFilesPath, type));
 
-        switch (type) {
-            case 1: {
-                filenames.addAll(FreeBikeStatusGenerator.generateBikes(agencyName, outputFilesPath));
-                filenames.addAll(StationInformationGenerator.generateStations(agencyName, outputFilesPath));
-                break;
-            }
-            case 2: {
-                // Los coches tienen estaciones asociadas?
-                filenames.addAll(FreeBikeStatusGenerator.generateCars(agencyName, outputFilesPath));
-                break;
-            }
-            case 3: {
-                // Motos y patines tienen estaciones asociadas?
-                filenames.addAll(FreeBikeStatusGenerator.generateScooters(agencyName, outputFilesPath));
-                break;
-            }
-        }
+        if (type == 1) filenames.addAll(StationInformationGenerator.generateStations(agencyName, outputFilesPath));
 
+        filenames.addAll(VehicleTypesGenerator.generateVehicleTypes(agencyName, outputFilesPath, type));
+        filenames.addAll(SystemPricingPlansGenerator.generateSystemPricingPlans(agencyName, outputFilesPath));
+        filenames.addAll(SystemHoursGenerator.generateSystemHours(agencyName, outputFilesPath));
         GBFSGenerator.generateGBFS(outputPath, agencyName, location, filenames, List.of("en"));
     }
 }

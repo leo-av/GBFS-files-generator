@@ -8,7 +8,7 @@ import java.util.Random;
 
 import static avl.leo.almohano.generators.StationStatusGenerator.generateStationsStatus;
 import static avl.leo.almohano.utils.FileUtils.createFile;
-import static avl.leo.almohano.utils.RandomGenerator.getRandomCoordinate;
+import static avl.leo.almohano.utils.RandomGenerator.getRandomCoordinates;
 import static avl.leo.almohano.utils.RandomGenerator.getRandomStationNumber;
 
 public class StationInformationGenerator {
@@ -49,8 +49,8 @@ public class StationInformationGenerator {
             JSONObject station = new JSONObject();
             station.put("station_id", String.format("%s_MADRID%03d", agencyName, i)); // Include operator name
             station.put("name", "Station " + i);
-            station.put("lat", getRandomCoordinate(40.3, 40.5, random)); // Latitude in Madrid
-            station.put("lon", getRandomCoordinate(-3.8, -3.6, random)); // Longitude in Madrid
+            station.put("lat", getRandomCoordinates(40.3, 40.5, random)); // Latitude in Madrid
+            station.put("lon", getRandomCoordinates(-3.8, -3.6, random)); // Longitude in Madrid
             station.put("capacity", random.nextInt(40) + 10); // Random capacity between 10 and 40
 
             // Add vehicle types supported by the station
