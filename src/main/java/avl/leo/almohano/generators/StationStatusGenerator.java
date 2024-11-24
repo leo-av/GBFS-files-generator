@@ -38,9 +38,12 @@ public class StationStatusGenerator {
         for (int i = 1; i <= stations; i++) {
             Map<String, Object> station = new HashMap<>();
             station.put("station_id", String.format(STATION_ID, agencyName, i)); // Include operator name
-            station.put("is_installed", 1); // Assume all stationList are installed
-            station.put("is_renting", 1); // Assume all stationList are renting
-            station.put("is_returning", 1); // Assume all stationList are returning
+            station.put("is_installed", true); // Assume all stations are installed
+            station.put("is_renting", true); // Assume all stations are renting
+            station.put("is_returning", true);// Assume all stations are returning
+
+            // Assume station status was reported 10-179 seconds ago
+            station.put("last_reported", currentTimestamp - (random.nextLong(169) + 10));
 
             int bikes = random.nextInt(20) + 1;
             int availableBikes = bikes - (bikes / 10);
