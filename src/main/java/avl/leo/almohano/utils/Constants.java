@@ -2,9 +2,14 @@ package avl.leo.almohano.utils;
 
 public final class Constants {
 
+    public static final String VEHICLE_ID = "%s_MADRID%03d";
+    public static final String STATION_ID = "%s_station_MADRID%03d";
+
     private Constants() {}
 
-    public static final String BASE_GBFS_URL = "https://leo-av.github.io/GBFS/%s/%s_gbfs/%s/%s";
+    public static final String BASE_GBFS_URL = "https://leo-av.github.io/GBFS/%s/%s_gbfs/%s.json";
+    public static final String BASE_GBFS_FILES_URL = "https://leo-av.github.io/GBFS/%s/%s_gbfs/%s/%s.json";
+    public static final String GBFS_VERSION = "2.3";
 
     public static final String PLAN_1 = "%s_plan_1";
     public static final String PLAN_2 = "%s_plan_2";
@@ -18,10 +23,10 @@ public final class Constants {
     public static final String BIKE = "bike";
     public static final String BICYCLE = "bicycle";
     public static final String ELECTRIC_BIKE = "electric_bike";
-    public static final String CARGO_BIKE = "cargo_bike";
-    public static final String CARGO_BICYCLE = "cargo_bicycle";
+    //public static final String CARGO_BIKE = "cargo_bike";
+    //public static final String CARGO_BICYCLE = "cargo_bicycle";
     public static final String SCOOTER = "scooter";
-    public static final String SCOOTER_STANDING = "scooter_standing";
+    //public static final String SCOOTER_STANDING = "scooter_standing";
     public static final String MOTORBIKE = "motorbike";
     public static final String MOPED = "moped";
     public static final String CAR = "car";
@@ -29,14 +34,13 @@ public final class Constants {
     public static final String ELECTRIC_ASSIST = "electric_assist";
     public static final String ELECTRIC = "electric";
     public static final String COMBUSTION = "combustion";
-    public static final String COMBUSTION_DIESEL = "combustion_diesel";
-    public static final String HYBRID = "hybrid";
+    //public static final String COMBUSTION_DIESEL = "combustion_diesel";
+    //public static final String HYBRID = "hybrid";
 
 
     public enum BikeType {
         BIKE(Constants.BIKE),
-        E_BIKE(ELECTRIC_BIKE),
-        CARGO_BIKE(Constants.CARGO_BIKE);
+        E_BIKE(ELECTRIC_BIKE);
 
         public final String name;
 
@@ -70,9 +74,7 @@ public final class Constants {
         HUMAN(Constants.HUMAN),
         E_ASSIST(ELECTRIC_ASSIST),
         E(ELECTRIC),
-        COMBUSTION(Constants.COMBUSTION),
-        COMBUSTION_D(COMBUSTION_DIESEL),
-        HYBRID(Constants.HYBRID);
+        COMBUSTION(Constants.COMBUSTION);
 
         public final String name;
 
@@ -83,9 +85,8 @@ public final class Constants {
 
     public enum FormFactor {
         BICYCLE(Constants.BICYCLE),
-        CARGO_BICYCLE(Constants.CARGO_BICYCLE),
         CAR(Constants.CAR),
-        SCOOTER_STANDING(Constants.SCOOTER_STANDING),
+        SCOOTER(Constants.SCOOTER),
         MOPED(Constants.MOPED);
 
         public final String name;
@@ -99,7 +100,7 @@ public final class Constants {
         E_BIKE(75000),
         E_SCOOTER(20000),
         E_MOTORBIKE(200000),
-        E_CAR(290000),
+        E_CAR(390000),
         MOTORBIKE(250000),
         CAR(500000);
 

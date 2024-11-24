@@ -1,21 +1,25 @@
 package avl.leo.almohano.utils;
 
-import org.json.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
 
 public class FileUtils {
 
-    public static void createFile(String path, String outputFileName, JSONObject data) {
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+    public static void createFileFromMap(String path, String outputFileName, Map<String, Object> data) {
         // Save to file
         try {
             File dir = new File(path);
             if (!dir.exists()) dir.mkdirs();
 
             try (FileWriter file = new FileWriter(dir.getPath() + outputFileName)) {
-                file.write(data.toString(4)); // Pretty print with 4 spaces
+                file.write(gson.toJson(data)); // Pretty print with 4 spaces
             }
             System.out.println("JSON data successfully saved to " + outputFileName);
         } catch (IOException e) {

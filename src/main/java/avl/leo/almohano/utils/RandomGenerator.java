@@ -34,4 +34,8 @@ public class RandomGenerator {
         return random.nextInt(5) + 25;
     }
 
+    public static int getRandomDistance(int min, int max, Random random) {
+        return random.nextInt(max) + min;
+    }
+
 }

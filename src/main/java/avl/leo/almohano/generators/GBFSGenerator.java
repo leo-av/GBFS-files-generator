@@ -1,12 +1,13 @@
 package avl.leo.almohano.generators;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import avl.leo.almohano.utils.FileUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import static avl.leo.almohano.utils.Constants.BASE_GBFS_URL;
-import static avl.leo.almohano.utils.FileUtils.createFile;
+import static avl.leo.almohano.utils.Constants.*;
 
 public class GBFSGenerator {
 
@@ -14,43 +15,73 @@ public class GBFSGenerator {
         String outputFileName = "/gbfs.json";
 
         // Generate JSON data
-        JSONObject jsonData = generateGBFS(agencyName, locationName, fileNames, languages);
+        Map<String, Object> data = generateGBFS(agencyName, locationName, fileNames, languages);
 
         // Save to file
-        createFile(path, outputFileName, jsonData);
+        FileUtils.createFileFromMap(path, outputFileName, data);
     }
 
-    private static JSONObject generateGBFS(String agencyName, String locationName, List<String> fileNames, List<String> languages) {
-        JSONObject root = new JSONObject();
+    public static List<String> generateGBFSVersions(String agency, String locationName, String path) {
+        String outputFileName = "/gbfs_versions.json";
+
+        // Generate JSON data
+        Map<String, Object> data = generateGBFSVersions(agency, locationName);
+
+        // Save to file
+        FileUtils.createFileFromMap(path, outputFileName, data);
+
+        return List.of(outputFileName);
+    }
+
+    private static Map<String, Object> generateGBFS(String agencyName, String locationName, List<String> fileNames, List<String> languages) {
+        Map<String, Object> root = new HashMap<>();
         long currentTimestamp = System.currentTimeMillis() / 1000;
 
         // Metadata
         root.put("last_updated", currentTimestamp);
         root.put("ttl", 180);
-        root.put("version", "2.3");
+        root.put("version", GBFS_VERSION);
 
-        // Bike data
-        JSONArray feedsArray = new JSONArray();
-        JSONArray languagesArray = new JSONArray();
-
+        // Languages feeds data
+        Map<String, Object> lan = new HashMap<>();
         languages.forEach(language -> {
-            JSONObject lan = new JSONObject();
+            // Feed data
+            Map<String, Object> feeds = new HashMap<>();
+            List<Object> feedsArray = new ArrayList<>();
             fileNames.forEach(file -> {
-                JSONObject fileData = new JSONObject();
-                String formatedFileName = file.replace("/", "");
+                Map<String, Object> fileData = new HashMap<>();
+                String formatedFileName = file.replace("/", "").replace(".json", "");
                 fileData.put("name", formatedFileName);
-                // BASE_GBFS_URL https://leo-av.github.io/GBFS/%s/%s_gbfs/%s/%s
-                // Example URL https://leo-av.github.io/GBFS/GRAPEFRUIT/madrid_gbfs/en/free_bike_status.json
-                fileData.put("url", String.format(BASE_GBFS_URL, agencyName, locationName, language, formatedFileName));
-                feedsArray.put(fileData);
+                // BASE_GBFS_URL https://leo-av.github.io/GBFS/%s/%s_gbfs/%s.json
+                if (formatedFileName.equals("gbfs_versions"))
+                    fileData.put("url", String.format(BASE_GBFS_URL, agencyName, locationName, formatedFileName));
+
+                // BASE_GBFS_FILES_URL https://leo-av.github.io/GBFS/%s/%s_gbfs/%s/%s.json
+                else fileData.put("url", String.format(BASE_GBFS_FILES_URL, agencyName, locationName, language, formatedFileName));
+
+                feedsArray.add(fileData);
             });
-            lan.put(language, feedsArray);
-            languagesArray.put(lan);
+            feeds.put("feeds", feedsArray);
+            lan.put(language, feeds);
         });
 
-        // Attach feeds array to root
-        root.put("data", languagesArray);
+        // Attach languages feeds to root
+        root.put("data", lan);
 
+        return root;
+    }
+
+    private static Map<String, Object> generateGBFSVersions(String agency, String locationName) {
+        Map<String, Object> root = new HashMap<>();
+        long currentTimestamp = System.currentTimeMillis() / 1000;
+        root.put("last_updated", currentTimestamp);
+        root.put("ttl", 180);
+        root.put("version", GBFS_VERSION);
+
+        List<Object> versions = new ArrayList<>();
+        versions.add(Map.of("version", GBFS_VERSION, "url", String.format(BASE_GBFS_URL, agency, locationName, "gbfs")));
+
+        root.put("data", versions);
         return root;
     }
 
