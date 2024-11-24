@@ -59,11 +59,11 @@ public class StationStatusGenerator {
             String typeBike = agencyName + "_" + BIKE;
             String typeEBike = agencyName + "_" + ELECTRIC_BIKE;
             Map<String, Object> dock1 = new HashMap<>();
-            dock1.put("vehicle_type_ids", List.of(typeBike, typeEBike));
+            dock1.put("vehicle_type_ids", List.of(typeBike));
             dock1.put("count", (availableDocks / 3) * 2);
 
             Map<String, Object> dock2 = new HashMap<>();
-            dock2.put("vehicle_type_ids", List.of(typeBike));
+            dock2.put("vehicle_type_ids", List.of(typeEBike));
             dock2.put("count", availableDocks / 3);
 
             station.put("vehicle_docks_available", List.of(dock1, dock2));
