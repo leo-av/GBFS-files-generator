@@ -81,7 +81,7 @@ public class GBFSGenerator {
         List<Object> versions = new ArrayList<>();
         versions.add(Map.of("version", GBFS_VERSION, "url", String.format(BASE_GBFS_URL, agency, locationName, "gbfs")));
 
-        root.put("data", versions);
+        root.put("data", Map.of("versions", versions));
         return root;
     }
 
