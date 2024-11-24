@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        int iteration = 1;
+        int iteration = 0;
 
         do {
             // Ask the user for the operator name
