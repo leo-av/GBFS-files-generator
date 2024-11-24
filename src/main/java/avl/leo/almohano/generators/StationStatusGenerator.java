@@ -74,7 +74,7 @@ public class StationStatusGenerator {
 
         // Attach stationList array to root
         Map<String, Object> data = new HashMap<>();
-        data.put("stationList", stationList);
+        data.put("stations", stationList);
         root.put("data", data);
 
         return root;
